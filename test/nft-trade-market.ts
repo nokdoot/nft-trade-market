@@ -35,31 +35,23 @@ describe("nftTradeMarket", () => {
   let gasPrice: BigNumberish;
   let mockNft: MockNft;
   let mockNft2: MockNft;
-  let fee = ethers.utils.parseEther("10");
+  let fee: BigNumberish;
   let tradeReceiptLimit = 20;
 
   beforeEach("", async () => {
     [owner, addrA, addrB, addrC] = await ethers.getSigners();
     feeAccount = (await ethers.getSigners()).at(-1)!;
     provider = owner.provider!;
+    fee = ethers.utils.parseEther("10");
     nftTradeMarket = await deployNftTradeMarket(fee, feeAccount.address);
     mockNft = await deployMockNft();
     mockNft2 = await deployMockNft();
     gasPrice = await provider.getGasPrice();
 
-    await mockNft.grantRole(await mockNft.MINTER_ROLE(), owner.address);
+    await mockNft.mintWithCount(addrA.address, 100);
+    await mockNft.mintWithCount(addrB.address, 100);
+    await mockNft.mintWithCount(addrC.address, 100);
 
-    for (let i = 0; i < 100; i++) {
-      await mockNft.mint(addrA.address, i);
-    }
-
-    for (let i = 100; i < 200; i++) {
-      await mockNft.mint(addrB.address, i);
-    }
-
-    for (let i = 200; i < 300; i++) {
-      await mockNft.mint(addrC.address, i);
-    }
   });
 
   describe("Validates", async () => {
@@ -137,16 +129,38 @@ describe("nftTradeMarket", () => {
       )).to.be.revertedWith("already put tradeReceipt");
     });
 
-    it.only("Prevent set fee by not admin", async () => {
+    it("Prevent set fee by not admin", async () => {
       await expect(nftTradeMarket.connect(addrA).setFee(ethers.utils.parseEther('20'))).to.be.revertedWith(
         "AccessControl: account 0x70997970c51812dc3a010c7d01b50e0d17dc79c8 is missing role 0x0000000000000000000000000000000000000000000000000000000000000000");
     });
   });
 
   describe("successes", async () => {
-    it.only("set fee", async () => {
+    it("set fee", async () => {
       await nftTradeMarket.connect(owner).setFee(ethers.utils.parseEther('20'));
       expect(await nftTradeMarket.fee()).to.be.eq(ethers.utils.parseEther('20'));
+    });
+
+    it.only("tttttttt", async () => {
+      await mockNft.connect(addrA).approve(nftTradeMarket.address, 0);
+      await nftTradeMarket.connect(addrA).putTradeReceipt({
+        anotherTrader: addrB.address,
+        givingTokenId: 0,
+        nftAddress: mockNft.address,
+        receivingTokenId: 100
+      }, {
+        value: fee
+      });
+
+      await mockNft.connect(addrA).approve(nftTradeMarket.address, 1);
+      await nftTradeMarket.connect(addrA).putTradeReceipt({
+        anotherTrader: addrB.address,
+        givingTokenId: 1,
+        nftAddress: mockNft.address,
+        receivingTokenId: 100
+      }, {
+        value: fee
+      });
     });
 
     it("put trade receipts and list them", async () => {
@@ -221,7 +235,7 @@ describe("nftTradeMarket", () => {
         );
       }
 
-      await nftTradeMarket.connect(addrA).cancelAll();
+      await nftTradeMarket.connect(addrA).cancelReceiptsAll();
 
       await mockNft.connect(addrB).approve(nftTradeMarket.address, 100);
       await nftTradeMarket.connect(addrB).putTradeReceipt(
@@ -247,7 +261,7 @@ describe("nftTradeMarket", () => {
       const myMarket = await nftTradeMarket.connect(addrA).myMarket();
       const targetTrade = myMarket[5];
 
-      await nftTradeMarket.connect(addrA).cancelTrade(targetTrade.tradeHash);
+      await nftTradeMarket.connect(addrA).cancelTradeReceipt(targetTrade.tradeHash);
 
       const myMarket2 = await nftTradeMarket.connect(addrA).myMarket();
       const deletedTrade = myMarket2.find((trade) => {

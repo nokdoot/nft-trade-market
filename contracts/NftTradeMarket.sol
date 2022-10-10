@@ -136,7 +136,7 @@ contract NftTradeMarket is INftTradeMarket, Pausable, AccessControl {
         return;
     }
 
-    function cancelTrade(bytes32 tradeHash_) external payable {
+    function cancelTradeReceipt(bytes32 tradeHash_) external payable {
         for (uint256 i = 0; i < marketOf[msg.sender].length; i++) {
             if (marketOf[msg.sender][i].tradeHash == tradeHash_) {
                 marketOf[msg.sender][i] = marketOf[msg.sender][marketOf[msg.sender].length - 1];
@@ -155,7 +155,7 @@ contract NftTradeMarket is INftTradeMarket, Pausable, AccessControl {
         return;
     }
 
-    function cancelAll() external payable {
+    function cancelReceiptsAll() external payable {
         uint256 allFee = 0;
         while (marketOf[msg.sender].length > 0) {
             MyTrade memory myTrade = marketOf[msg.sender][marketOf[msg.sender].length - 1];

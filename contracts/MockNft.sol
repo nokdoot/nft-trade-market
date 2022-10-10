@@ -1,16 +1,14 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.9;
 
-import "../node_modules/@klaytn/contracts/KIP/token/KIP17/KIP17.sol";
-import "../node_modules/@klaytn/contracts/KIP/token/KIP17/extensions/KIP17Mintable.sol";
+import "../node_modules/@openzeppelin/contracts/token/ERC721/presets/ERC721PresetMinterPauserAutoId.sol";
+import "../node_modules/@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "../node_modules/@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 
-contract MockNft is KIP17("MNFT", "Mock NFT"), KIP17Mintable {
-
-    constructor () {
-      _setupRole(DEFAULT_ADMIN_ROLE, msg.sender);
-    }
-
-    function supportsInterface(bytes4 interfaceId) public view virtual override (KIP17, KIP17Mintable) returns (bool) {
-      return super.supportsInterface(interfaceId);
+contract MockNft is ERC721PresetMinterPauserAutoId("MNFT", "Mock NFT", "hhhhhh") {
+    function mintWithCount(address to, uint256 count) external {
+      for (uint256 i = 0; i < count; i++) {
+        mint(to);
+      }
     }
 }

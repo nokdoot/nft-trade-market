@@ -11,4 +11,5 @@ const PUBLIC_KEY = env.get('PUBLIC_KEY').required().asString();
     PUBLIC_KEY,
   );
   await nftTradeMarket.deployed();
+  console.log('nftTradeMarket:', nftTradeMarket.address);
 })();

@@ -9,5 +9,5 @@ import env from 'env-var';
   const MockNft = await ethers.getContractFactory('MockNft');
   const mockNft = await MockNft.deploy();
   await mockNft.deployed();
-  await mockNft.grantRole(await mockNft.MINTER_ROLE(), owner.address);
+  console.log('mockNft:', mockNft.address);
 })();
