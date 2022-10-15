@@ -1,7 +1,8 @@
 <script>
   import svelteLogo from './assets/svelte.svg'
-  import Counter from './lib/Counter.svelte'
+  import Trade from './lib/Trade.svelte'
   import Wallet from './lib/Wallet.svelte'
+  import TradeReceipt from './lib/TradeReceipt.svelte'
 </script>
 
 <main>
@@ -16,8 +17,8 @@
   <h1>Vite + Svelte</h1>
 
   <div class="card">
-    <Counter />
     <Wallet />
+    <Trade />
   </div>
 
   <p>

@@ -1,13 +1,26 @@
 <script>
-  const connect = () => {
-    console.log(typeof window.klaytn !== 'undefined');
-    klaytn.enable();
-    klaytn.on('accountsChanged', function(accounts) {
-      console.log(accounts);
-    })
+  let isUnlocked = false;
+
+  klaytn._kaikas.isUnlocked().then((result) => { console.log(result); isUnlocked = result });
+
+  const connectKaikas = async () => {
+    await klaytn.enable();
+    isUnlocked = await klaytn._kaikas.isUnlocked();
   }
 </script>
 
-<button on:click="{connect}">
-  connect
-</button>
+<style>
+  div > p {
+    color: rgb(183, 0, 255)
+  }
+</style>
+{#if !isUnlocked}
+  <button on:click="{connectKaikas}">
+    connectKaikas
+  </button>
+{:else}
+
+  <div>
+    Account: <p>{klaytn.selectedAddress}</p>
+  </div>
+{/if}
