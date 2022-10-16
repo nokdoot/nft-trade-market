@@ -1,4 +1,6 @@
 <script>
+  export let uniqueMyMarket;
+  export let reloadTrade;
   import { ethers } from "ethers";
   import { createNftContract } from "../model/nft";
   import TradeReceipt from "./TradeReceipt.svelte";
@@ -13,32 +15,31 @@
   let nft = emptyNftInfo;
 
   const getNftInfo = async (e) => {
-    const address = e.target.value;
-    if (!ethers.utils.isAddress(address)) {
-      nft = emptyNftInfo;
-      return;
+    try {
+      const address = e.target.value;
+      if (!ethers.utils.isAddress(address)) {
+        nft = emptyNftInfo;
+        return;
+      }
+      const nftContract = createNftContract(address);
+      const name = await nftContract.name();
+      const symbol = await nftContract.symbol();
+      nft = {
+        address,
+        name,
+        symbol,
+      }
+    } catch (e) {
+      console.log(e);
     }
-    const nftContract = createNftContract(address);
-    const name = await nftContract.name();
-    const symbol = await nftContract.symbol();
-
-    nft = {
-      address,
-      name,
-      symbol,
-      tokenId: "",
-    }
+    
   }
 </script>
 
 <div>
-  NFT Address: <input on:input={getNftInfo}>
-  {nft.address}
-  {nft.name}
-  {nft.symbol}
-  {nft.tokenId}
+  NFT Address: <input on:input={getNftInfo} size=50>
 </div>
 
 {#if nft.address}
-  <TradeReceipt nftAddress={nft.address} />
+  <TradeReceipt {uniqueMyMarket} {reloadTrade} nftAddress={nft.address} nftName={nft.name} nftSymbol={nft.symbol} />
 {/if}

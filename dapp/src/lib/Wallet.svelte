@@ -1,11 +1,37 @@
 <script>
+  import Trade from './Trade.svelte'
+  import MyMarket from './MyMarket.svelte'
+  
   let isUnlocked = false;
+  let chainId = 0;
+  let selectedAddress = window.klaytn?.selectedAddress;
 
-  klaytn._kaikas.isUnlocked().then((result) => { console.log(result); isUnlocked = result });
+  let uniqueWallet = {};
+  let uniqueMyMarket = {};
+
+  function reloadTrade() {
+    uniqueWallet = {}
+  }
+
+  window.klaytn?._kaikas.isUnlocked()
+    .then((result) => { isUnlocked = result });
+
+    
+  window.klaytn?.on('networkChanged', () => {
+    chainId = klaytn.networkVersion;
+  });
+
+  window.klaytn?.on('accountsChanged', (accounts) => {
+    reloadTrade();
+    console.log('accountsChanged')
+    selectedAddress = window.klaytn?.selectedAddress
+  })
+
 
   const connectKaikas = async () => {
-    await klaytn.enable();
-    isUnlocked = await klaytn._kaikas.isUnlocked();
+    await window.klaytn.enable();
+    isUnlocked = await window.klaytn._kaikas.isUnlocked();
+    chainId = klaytn.networkVersion;
   }
 </script>
 
@@ -19,8 +45,17 @@
     connectKaikas
   </button>
 {:else}
-
   <div>
-    Account: <p>{klaytn.selectedAddress}</p>
+    Account: <p>{selectedAddress}</p>
   </div>
 {/if}
+
+{#key uniqueWallet}
+  <Trade {uniqueMyMarket} {reloadTrade}/>
+  <br>
+  <br>
+  <br>
+  <br>
+  <MyMarket {uniqueMyMarket} {reloadTrade}/>
+{/key}
+

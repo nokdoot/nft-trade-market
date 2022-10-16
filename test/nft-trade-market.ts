@@ -141,28 +141,6 @@ describe("nftTradeMarket", () => {
       expect(await nftTradeMarket.fee()).to.be.eq(ethers.utils.parseEther('20'));
     });
 
-    it.only("tttttttt", async () => {
-      await mockNft.connect(addrA).approve(nftTradeMarket.address, 0);
-      await nftTradeMarket.connect(addrA).putTradeReceipt({
-        anotherTrader: addrB.address,
-        givingTokenId: 0,
-        nftAddress: mockNft.address,
-        receivingTokenId: 100
-      }, {
-        value: fee
-      });
-
-      await mockNft.connect(addrA).approve(nftTradeMarket.address, 1);
-      await nftTradeMarket.connect(addrA).putTradeReceipt({
-        anotherTrader: addrB.address,
-        givingTokenId: 1,
-        nftAddress: mockNft.address,
-        receivingTokenId: 100
-      }, {
-        value: fee
-      });
-    });
-
     it("put trade receipts and list them", async () => {
       const receipts = [];
       for (let i = 0; i < tradeReceiptLimit; i++) {

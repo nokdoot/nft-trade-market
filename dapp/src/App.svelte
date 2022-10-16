@@ -1,11 +1,13 @@
 <script>
   import svelteLogo from './assets/svelte.svg'
-  import Trade from './lib/Trade.svelte'
   import Wallet from './lib/Wallet.svelte'
-  import TradeReceipt from './lib/TradeReceipt.svelte'
 </script>
 
 <main>
+  <div class="card">
+    <Wallet />
+  </div>
+
   <div>
     <a href="https://vitejs.dev" target="_blank"> 
       <img src="/vite.svg" class="logo" alt="Vite Logo" />
@@ -15,11 +17,6 @@
     </a>
   </div>
   <h1>Vite + Svelte</h1>
-
-  <div class="card">
-    <Wallet />
-    <Trade />
-  </div>
 
   <p>
     Check out <a href="https://github.com/sveltejs/kit#readme" target="_blank">SvelteKit</a>, the official Svelte app framework powered by Vite!

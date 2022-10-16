@@ -1,7 +1,5 @@
 import { ethers } from 'ethers';
-
-// const END_POINT_URL = 'https://public-node-api.klaytnapi.com/v1/baobab';
-const END_POINT_URL = 'https://klaytn01.fandom.finance/';
+import { END_POINT_URL } from '../config';
 
 const ABI = [
   'function approve(address _approved, uint256 _tokenId) external payable',
@@ -12,8 +10,9 @@ const ABI = [
   'function ownerOf(uint256 _tokenId) external view returns (address)'
 ]
 
-export const createNftContract = (address: string) => {
+export const createNftContract = (address) => {
   console.log(address);
+  console.log(END_POINT_URL);
   const provider = new ethers.providers.JsonRpcProvider(END_POINT_URL);
   const contract = new ethers.Contract(address, ABI, provider);
   return contract;
