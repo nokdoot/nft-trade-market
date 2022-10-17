@@ -4,13 +4,10 @@
   import { NFT_TRADE_MARKET_ABI, NFT_TRADE_MARKET_ADDRESS } from '../config';
 
   let selectedAddress = window.klaytn?.selectedAddress;
-
-  
   let myMarket = [];
 
   const getMyMarket = async () => {
     const nftTradeMarket = new window.caver.klay.Contract(NFT_TRADE_MARKET_ABI, NFT_TRADE_MARKET_ADDRESS);
-
     myMarket = await nftTradeMarket.methods.myMarket().call();
   };
 
@@ -27,12 +24,12 @@
   }
 
 </script>
-
 <style>
-  div > p {
-    color: rgb(183, 0, 255)
+  button {
+    border: 1px solid black;
   }
 </style>
+
 {#key uniqueMyMarket}
 <div>
   {#if myMarket.length > 0 }

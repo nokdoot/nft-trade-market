@@ -6,7 +6,9 @@ const app = express();
 
 app.use(cors());
 
-app.use(express.static('static'))
+app.use('/baobab', express.static('baobab'));
+app.use('/cypress', express.static('cypress'));
+app.use('/assets', express.static('assets'));
 
 app.get('/proxy', async (req, res) => {
   try {

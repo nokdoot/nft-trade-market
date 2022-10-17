@@ -1,5 +1,6 @@
 <script>
   import svelteLogo from './assets/svelte.svg'
+  import viteLog from './assets/vite.svg'
   import Wallet from './lib/Wallet.svelte'
 </script>
 
@@ -10,7 +11,7 @@
 
   <div>
     <a href="https://vitejs.dev" target="_blank"> 
-      <img src="/vite.svg" class="logo" alt="Vite Logo" />
+      <img src={viteLog} class="logo" alt="Vite Logo" />
     </a>
     <a href="https://svelte.dev" target="_blank"> 
       <img src={svelteLogo} class="logo svelte" alt="Svelte Logo" />

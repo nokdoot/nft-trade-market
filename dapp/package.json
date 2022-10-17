@@ -3,26 +3,26 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
-    "dev:server": "npm run build:web && node server.js",
-    "dev:web": "vite",
-    "build": "npm run build:web && npm run build:server",
-    "build:server": "vite build",
-    "build:web": "vite build",
-    "preview": "vite preview",
-    "deploy:prod": "rsync -r ./ --exclude=node_modules rasp:~/prod/dapp && ssh rasp 'cd prod/dapp; export PATH=$PATH:/home/rasp/.nvm/versions/node/v16.18.0/bin; npm install; pm2 restart ecosystem.config.cjs'"
+    "dev:baobab": "vite --config vite.baobab.config.js --mode baobab",
+    "build:baobab": "rm -rf dist baobab && vite build --config vite.baobab.config.js --mode baobab && mkdir -p dist && cp -r baobab dist && cp server.js package.json dist",
+    "deploy:baobab": "rsync -r ./dist/* rasp:~/nft-trade-market && ssh rasp 'cd nft-trade-market; export PATH=$PATH:/home/rasp/.nvm/versions/node/v16.18.0/bin; npm install --omit=dev; pm2 start ecosystem.config.js'",
+
+    "build:cypress": "rm -rf dist cypress && vite build --config vite.cypress.config.js --mode cypress && mkdir -p dist && cp -r cypress dist && cp server.js package.json dist",
+    "deploy:cypress": "rsync -r ./dist/* rasp:~/nft-trade-market && ssh rasp 'cd nft-trade-market; export PATH=$PATH:/home/rasp/.nvm/versions/node/v16.18.0/bin; npm install --omit=dev; pm2 start ecosystem.config.js'",
+    "preview": "vite preview"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^1.0.2",
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.14",
     "@types/node-fetch": "^2.6.2",
+    "ethers": "^5.7.1",
     "svelte": "^3.49.0",
-    "vite": "^3.1.0"
+    "vite": "^3.1.0",
+    "axios": "^1.1.2"
   },
   "dependencies": {
-    "axios": "^1.1.2",
     "cors": "^2.8.5",
-    "ethers": "^5.7.1",
     "express": "^4.18.2",
     "node-fetch": "^2.6.7"
   }

@@ -5,13 +5,15 @@
   export let nftName;
   export let nftSymbol;
 
+  import svelteLog from '../assets/svelte.svg';
+  import viteLog from '../assets/vite.svg';
   import { createNftContract } from "../model/nft";
   import axios from "axios";
   import { ethers } from "ethers";
-  import { NFT_TRADE_MARKET_ABI, NFT_TRADE_MARKET_ADDRESS, ERC721_ABI, PROXY_SERVER_URL } from "../config";
+  import { NFT_TRADE_MARKET_ABI, NFT_TRADE_MARKET_ADDRESS, ERC721_ABI, PROXY_SERVER_URL, FEE, COIN } from "../config";
 
   const nftContract = createNftContract(nftAddress);
-  const defaultNftImagePath = '/vite.svg';
+  const defaultNftImagePath = `assets/vite.svg`;
 
   const my = {
     image: defaultNftImagePath,
@@ -34,6 +36,7 @@
       const response = await axios.get(`${PROXY_SERVER_URL}/proxy?url=${tokenURI}`);
       const metadata = response.data;
       image = metadata.image;
+      document.getElementById(of).src = image;
     } catch (e) {
       console.log(e);
     }
@@ -59,7 +62,7 @@
       nftAddress,
       receivingTokenId: anotherTrader.tokenId
     }).send({
-      value: ethers.utils.parseEther('0.1'),
+      value: ethers.utils.parseEther(FEE),
       from: window.klaytn.selectedAddress,
       gas: parseInt(297929 * 1.5)
     });
@@ -88,6 +91,9 @@
     padding: 5px;
     text-align: center;
   }
+  button {
+    border: 1px solid black;
+  }
 </style>
 <div>
   <table>
@@ -106,9 +112,9 @@
       <td><b>COUNTERPARTY</b></td>
     </tr>
     <tr>
-      <td><img src="{my.image}" alt="my nft" width="300" height="300"></td>
+      <td><img src="{viteLog}" id="my" alt="my nft" width="300" height="300"></td>
       <th>IMAGE</th>
-      <td><img src="{anotherTrader.image}" alt="another trader nft" width="300" height="300" ></td>
+      <td><img src="{svelteLog}" id="another" alt="another trader nft" width="300" height="300" ></td>
     </tr>
     <tr>
       <td><input type="number" min="0" on:input={e => getNftMetadata('my', e.target.value)}></td>
@@ -132,5 +138,6 @@
 </div>
 
 <div>
-<button on:click={sendTradeReceipt}>Send Trade TX</button>
+  <br>
+  <button on:click={sendTradeReceipt}>Send Trade TX(FEE: {COIN}{FEE})</button>
 </div>

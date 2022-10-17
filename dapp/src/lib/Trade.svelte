@@ -5,6 +5,8 @@
   import { createNftContract } from "../model/nft";
   import TradeReceipt from "./TradeReceipt.svelte";
 
+  let uniqueTrade = {};
+
   const emptyNftInfo = {
     address: "",
     name: "",
@@ -32,7 +34,7 @@
     } catch (e) {
       console.log(e);
     }
-    
+    uniqueTrade = {};
   }
 </script>
 
@@ -40,6 +42,8 @@
   NFT Address: <input on:input={getNftInfo} size=50>
 </div>
 
-{#if nft.address}
-  <TradeReceipt {uniqueMyMarket} {reloadTrade} nftAddress={nft.address} nftName={nft.name} nftSymbol={nft.symbol} />
-{/if}
+{#key uniqueTrade}
+  {#if nft.address}
+    <TradeReceipt {uniqueMyMarket} {reloadTrade} nftAddress={nft.address} nftName={nft.name} nftSymbol={nft.symbol} />
+  {/if}
+{/key}
