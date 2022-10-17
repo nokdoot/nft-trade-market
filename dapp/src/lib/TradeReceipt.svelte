@@ -139,5 +139,5 @@
 
 <div>
   <br>
-  <button on:click={sendTradeReceipt}>Send Trade TX(FEE: {COIN}{FEE})</button>
+  <button on:click={sendTradeReceipt}>Send Trade TX(FEE: {FEE}{COIN})</button>
 </div>

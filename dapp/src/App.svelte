@@ -5,6 +5,17 @@
 </script>
 
 <main>
+  <div>
+    <p>
+      내가 소유한 NFT와 상대방이 소유한 NFT를 교환하는 서비스입니다.
+    </p>
+    <p>
+      양쪽의 트랜잭션이 실행되어야 교환이 발생합니다. [<b>SEND TRADE TX</b>]
+    </p>
+    <p>
+      아직 교환되지 않은 건은 취소할 수 있습니다. [<b>CANCEL ALL</b>]
+    </p>
+  </div>
   <div class="card">
     <Wallet />
   </div>

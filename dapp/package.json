@@ -4,11 +4,11 @@
   "version": "0.0.0",
   "scripts": {
     "dev:baobab": "vite --config vite.baobab.config.js --mode baobab",
-    "build:baobab": "rm -rf dist baobab && vite build --config vite.baobab.config.js --mode baobab && mkdir -p dist && cp -r baobab dist && cp server.js package.json dist",
+    "build:baobab": "npm run build:baobab && rm -rf dist baobab && vite build --config vite.baobab.config.js --mode baobab && mkdir -p dist && cp -r baobab dist && cp server.js package.json dist",
     "deploy:baobab": "rsync -r ./dist/* rasp:~/nft-trade-market && ssh rasp 'cd nft-trade-market; export PATH=$PATH:/home/rasp/.nvm/versions/node/v16.18.0/bin; npm install --omit=dev; pm2 start ecosystem.config.js'",
 
     "build:cypress": "rm -rf dist cypress && vite build --config vite.cypress.config.js --mode cypress && mkdir -p dist && cp -r cypress dist && cp server.js package.json dist",
-    "deploy:cypress": "rsync -r ./dist/* rasp:~/nft-trade-market && ssh rasp 'cd nft-trade-market; export PATH=$PATH:/home/rasp/.nvm/versions/node/v16.18.0/bin; npm install --omit=dev; pm2 start ecosystem.config.js'",
+    "deploy:cypress": "npm run build:cypress && rsync -r ./dist/* rasp:~/nft-trade-market && ssh rasp 'cd nft-trade-market; export PATH=$PATH:/home/rasp/.nvm/versions/node/v16.18.0/bin; npm install --omit=dev; pm2 start ecosystem.config.js'",
     "preview": "vite preview"
   },
   "devDependencies": {
