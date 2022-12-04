@@ -15,6 +15,9 @@
     <p>
       아직 교환되지 않은 건은 취소할 수 있습니다. [<b>CANCEL ALL</b>]
     </p>
+    <p>
+      PC 카이카스만 지원됩니다.
+    </p>
   </div>
   <div class="card">
     <Wallet />
